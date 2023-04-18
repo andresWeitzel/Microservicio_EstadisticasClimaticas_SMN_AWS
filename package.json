@@ -1,0 +1,32 @@
+{
+  "name": "microservicio_estadisticasclimaticas_smn_aws",
+  "version": "1.0.0",
+  "description": "Api Rest para la gestión de magnitudes climáticas del SMN como lo son temperatura, humedad, nubosidad, precipitación, etc de diversas estaciones meteorológicas implementado con JWT, NodeJS, DynamoDB, Systems Manager Parameter Store, Bucket S3, Api-Gateway, Serverless-Framework, Lambda, etc.",
+  "main": "handler.js",
+  "scripts": {
+    "dynamodb-service": "java -Djava.library.path=.dynamodb/DynamoDBLocal_lib -jar .dynamodb/DynamoDBLocal.jar -sharedDb -inMemory",
+    "dynamodb-migrate": "sls dynamodb start --migrate",
+    "serverless-offline": "sls offline start",
+    "start": "concurrently --kill-others \"npm run dynamodb-service\" \"npm run dynamodb-migrate\" \"npm run serverless-offline\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andresWeitzel/Microservicio_EstadisticasClimaticas_SMN_AWS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andresWeitzel/Microservicio_EstadisticasClimaticas_SMN_AWS/issues"
+  },
+  "homepage": "https://github.com/andresWeitzel/Microservicio_EstadisticasClimaticas_SMN_AWS#readme",
+  "devDependencies": {
+    "serverless-offline": "^12.0.4",
+    "serverless-offline-ssm": "^6.2.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.315.0",
+    "@aws-sdk/lib-dynamodb": "^3.315.0",
+    "serverless-dynamodb-local": "^0.2.40"
+  }
+}

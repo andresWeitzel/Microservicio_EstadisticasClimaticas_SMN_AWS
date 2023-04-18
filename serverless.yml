@@ -1,0 +1,65 @@
+
+service: microservicio-estadisticasclimaticas-smn-aws
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  region : us-east-1
+  memorySize: 512
+  timeout : 10
+  environment: 
+    ${file(./serverless_ssm.yml)}
+  apiGateway:
+    apiKeys:
+      - name : xApiKey
+        value : ${file(./serverless_ssm.yml):X_API_KEY}
+  logs:
+    # Enable REST API logs
+    restApi:
+      accessLogging: true
+      format: "requestId: $context.requestId"
+      executionLogging: true
+      level: INFO
+      fullExecutionData: true
+      role: arn:aws:iam::xxxx:role
+      roleManagedExternally: false         
+
+plugins:
+    - serverless-dynamodb-local
+    - serverless-offline-ssm
+    - serverless-offline  
+
+functions:
+  insertBioetanolPrecios:
+    handler: src/controllers/bioetanolPrecios/insertBioetanolPrecios.handler
+    description: Function to insert an object in the bioethanol prices table
+    timeout: 10
+    events:
+      - http:
+          method: post
+          path: /${file(./serverless_ssm.yml):API_VERSION}/bioetanol-precios/insert
+          private: true
+
+resources:
+  - ${file(src/resources/dynamo-table.yml)}
+  - ${file(src/resources/api-gateway.yml)}     
+
+custom:  
+  serverless-offline-ssm:
+    stages:
+      - dev
+    ssm: 
+      ${file(./serverless_ssm.yml)}
+  dynamodb:
+    stages:
+      - dev
+    start:
+      inMemory: true
+      migrate: true
+      seed: true
+  serverless-offline:
+    httpPort: 4000
+    lambdaPort: 4002 
