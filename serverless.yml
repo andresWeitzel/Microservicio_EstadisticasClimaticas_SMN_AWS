@@ -33,14 +33,13 @@ plugins:
     - serverless-offline  
 
 functions:
-  insertBioetanolPrecios:
-    handler: src/controllers/bioetanolPrecios/insertBioetanolPrecios.handler
-    description: Function to insert an object in the bioethanol prices table
-    timeout: 10
+  insertEstadisticasClimaticas:
+    handler: src/controllers/estadisticasClimaticas/insert.handler
+    description: Function to insert an object in the estadisticas climaticas table
     events:
       - http:
           method: post
-          path: /${file(./serverless_ssm.yml):API_VERSION}/bioetanol-precios/insert
+          path: /${file(./serverless_ssm.yml):API_VERSION}/estadisticas-climaticas/insert
           private: true
 
 resources:

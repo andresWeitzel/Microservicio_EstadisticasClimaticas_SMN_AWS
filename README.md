@@ -1,7 +1,7 @@
 ![Index app](./doc/assets/data.png)
 
 # Microservicio_EstadisticasClimaticas_SMN_AWS
-Api Rest para la gestión de magnitudes climáticas del SMN como lo son temperatura, humedad, nubosidad, precipitación, etc de diversas estaciones meteorológicas implementado con JWT, NodeJS, DynamoDB, Systems Manager Parameter Store, Bucket S3, Api-Gateway, Serverless-Framework, Lambda, etc.
+Api Rest para la gestión de magnitudes climáticas del SMN como lo son temperatura, humedad, nubosidad, precipitación, etc de diversas estaciones meteorológicas implementado con JWT, NodeJS, DynamoDB, Systems Manager Parameter Store, Bucket S3, Api-Gateway, Serverless-Framework, Lambda, etc. Los servicios de aws se prueban en local. El código del proyecto y la documentación de este (menos doc técnica), ha sido desarrollado/a en inglés.
 
 * [Dataset Servicio Meteorológico Nacional (Estadísticas Climáticas)](https://www.smn.gob.ar/descarga-de-datos)
 * [Proyecto base para Microfrontend](https://www.smn.gob.ar/clima/vigilancia)
@@ -71,6 +71,96 @@ Api Rest para la gestión de magnitudes climáticas del SMN como lo son temperat
   <br>
  
  
+* Una vez creado un entorno de trabajo a través de algún ide, clonamos el proyecto
+```git
+git clone https://github.com/andresWeitzel/Microservicio_EstadisticasClimaticas_SMN_AWS
+```
+* Nos posicionamos sobre el proyecto
+```git
+cd 'projectName'
+```
+* Instalamos la última versión LTS de [Nodejs(v18)](https://nodejs.org/en/download)
+* Instalamos Serverless Framework de forma global si es que aún no lo hemos realizado
+```git
+npm install -g serverless
+```
+* Verificamos la versión de Serverless instalada
+```git
+sls -v
+```
+* Instalamos todos los paquetes necesarios
+```git
+npm i
+```
+* Instalamos dynamodb con la configuración de librerias que se encuentran dentro de .dynamodb. Procedemos a instalar dicho servicio 
+```git
+sls dynamodb install
+```
+* Creamos un archivo para almacenar las variables ssm utilizadas en el proyecto (Más allá que sea un proyecto con fines no comerciales es una buena práctica utilizar variables de entorno).
+  * Click der sobre la raíz del proyecto
+  * New file
+  * Creamos el archivo con el name `serverless_ssm.yml`. Este deberá estar a la misma altura que el serverless.yml
+  * Añadimos las ssm necesarias dentro del archivo.
+  ```git
+
+      # AUTHENTICATION
+      X_API_KEY : 'f98d8cd98h73s204e3456998ecl9427j'
+
+      BEARER_TOKEN : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+
+      # API VALUES
+      API_VERSION : 'v1'
+
+      # DYNAMODB VALUES
+      BIOET_PRECIOS_TABLE_NAME : 'estadisticas-climaticas'
+      REGION : 'us-east-1'
+      ACCESS_KEY_RANDOM_VALUE: 'access_key_random_value'
+      SECRET_KEY_RANDOM_VALUE: 'secret_key_random_value'
+      ENDPOINT: "http://localhost:8000"
+
+  ```
+* Instalamos el sdk client de dynamodb para las operaciones de db necesarias
+``` git
+npm install @aws-sdk/client-dynamodb
+```     
+* Instalamos el sdk lib de dynamodb para las operaciones de db necesarias
+``` git
+npm i @aws-sdk/lib-dynamodb
+```
+* Configuramos las credenciales de aws seteadas en el proyecto (Verificar ssm).
+```git
+aws configure
+```
+```git
+AWS Access Key ID .... : access_key_random_value
+AWS Secret Key ID .... : secret_key_random_value
+Default.... [us-east-1] : us-east-1
+Default outpu..... : json
+```
+* Visualizamos que se hayan seteado las credenciales
+```git
+aws configure list
+```
+* Los siguientes scripts configurados en el package.json del proyecto son los encargados de
+   * Ejecutar el servicio de dynamoDB en memoria (script dynamodb-service)
+   * Realizar la migración de las tablas (script dynamodb-migrate)
+   * Levantar serverless-offline (serverless-offline)
+ ```git
+  "scripts": {
+    "dynamodb-service": "java -Djava.library.path=.dynamodb/DynamoDBLocal_lib -jar .dynamodb/DynamoDBLocal.jar -sharedDb -inMemory",
+    "dynamodb-migrate": "sls dynamodb start --migrate",
+    "serverless-offline": "sls offline start",
+    "start": "concurrently --kill-others \"npm run dynamodb-service\" \"npm run dynamodb-migrate\" \"npm run serverless-offline\""
+  },
+```
+* Ejecutamos los scripts configurados
+```git
+npm start
+```
+* Si se ha realizado la migración de tablas previamente (ejecutado el comando anterior), al momento de una nueva ejecución con el mismo, surgiran errores en consola. Esto esta contemplado ya que la migración levanta el servicio de dynamodb, pero `se podrá ejecutar el servicio sin problemas`. Una alternativa es usar directamente el comando `sls offline start` ya que se corrió inicialmente y al menos una vez dicha migración. 
+
+
+ 
 
  
  
@@ -85,6 +175,162 @@ Api Rest para la gestión de magnitudes climáticas del SMN como lo son temperat
   <summary>Ver</summary>
  <br>
  
+
+
+* Creamos un entorno de trabajo a través de algún ide, luego de crear una carpeta nos posicionamos sobre la misma
+```git
+cd 'projectName'
+```
+* Instalamos la última versión LTS de [Nodejs(v18)](https://nodejs.org/en/download)
+* Instalamos Serverless Framework de forma global si es que aún no lo hemos realizado
+```git
+npm install -g serverless
+```
+* Verificamos la versión de Serverless instalada
+```git
+sls -v
+```
+* Inicializamos un template de serverles
+```git
+serverless create --template aws-nodejs
+```
+* Inicializamos un proyecto npm
+```git
+npm init -y
+```
+* Instalamos serverless offline 
+```git
+npm i serverless-offline --save-dev
+```
+* Agregamos el plugin dentro del serverless.yml
+```yml
+plugins:
+  - serverless-offlline
+``` 
+* Instalamos serverless ssm 
+```git
+npm i serverless-offline-ssm --save-dev
+```
+* Agregamos el plugin dentro del serverless.yml
+```yml
+plugins:
+  - serverless-offlline-ssm
+```  
+* Instalamos serverless-dynamoDB-local (No dynamoDB). Importante que sea --save y NO --save-dev
+```git
+npm install serverless-dynamodb-local --save
+```
+ * Agregamos el plugin dentro del serverless.yml
+```yml
+plugins:
+  - serverless-dynamodb-local
+```
+ * Reemplazamos la plantila serverless.yml inicial por la siguiente como modelo base (cambiar nombre, etc)...
+```yml
+
+service: nombre
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region : us-west-1
+  memorySize: 512
+  timeout : 10
+
+plugins:
+    - serverless-dynamodb-local
+    - serverless-offline-ssm
+    - serverless-offline  
+
+functions:
+  hello:
+    handler: handler.hello
+
+custom:
+  serverless-offline:
+    httpPort: 4000
+    lambdaPort: 4002    
+  serverless-offline-ssm:
+    stages:
+      - dev
+  dynamodb:
+    stages:
+      - dev
+```
+* Instalamos el sdk client de dynamodb para las operaciones de db necesarias
+``` git
+npm install @aws-sdk/client-dynamodb
+```     
+* Instalamos el sdk lib de dynamodb para las operaciones de db necesarias
+``` git
+npm i @aws-sdk/lib-dynamodb
+```   
+* Descargamos la Java Runtime Engine (JRE) versión 6.x o posterior. [Descargar desde aquí](https://www.oracle.com/java/technologies/downloads/)
+* Descargamos el .jar que contendrá toda la configuración para la instalación . [Descargar desde aquí](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html#DynamoDBLocal.DownloadingAndRunning.title)
+* Una vez descargado el .jar en formato .tar descomprimimos y copiamos todo su contenido dentro de la carpeta que se cread de dynamo en el proyecto (.dynamodb). Si esta carpeta no está, la creamos dentro de proyecto.
+* Procedemos a instalar el servicio de dynamodb
+```git
+sls dynamodb install
+```
+* Creamos un archivo para almacenar las variables ssm utilizadas en el proyecto (Más allá que sea un proyecto con fines no comerciales es una buena práctica utilizar variables de entorno).
+  * Click der sobre la raíz del proyecto
+  * New file
+  * Creamos el archivo con el name `serverless_ssm.yml`. Este deberá estar a la misma altura que el serverless.yml
+  * Añadimos las ssm necesarias dentro del archivo.
+  ```git
+
+      # AUTHENTICATION
+      X_API_KEY : 'f98d8cd98h73s204e3456998ecl9427j'
+
+      BEARER_TOKEN : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+
+      # API VALUES
+      API_VERSION : 'v1'
+
+      # DYNAMODB VALUES
+      BIOET_PRECIOS_TABLE_NAME : 'estadisticas-climaticas'
+      REGION : 'us-east-1'
+      ACCESS_KEY_RANDOM_VALUE: 'access_key_random_value'
+      SECRET_KEY_RANDOM_VALUE: 'secret_key_random_value'
+      ENDPOINT: "http://localhost:8000"
+
+  ```
+* Configuramos las credenciales de aws seteadas en el proyecto (Verificar ssm).
+```git
+aws configure
+```
+```git
+AWS Access Key ID .... : access_key_random_value
+AWS Secret Key ID .... : secret_key_random_value
+Default.... [us-east-1] : us-east-1
+Default outpu..... : json
+```
+* Visualizamos que se hayan seteado las credenciales
+```git
+aws configure list
+```
+* Los siguientes scripts configurados en el package.json del proyecto son los encargados de
+   * Ejecutar el servicio de dynamoDB en memoria (script dynamodb-service)
+   * Realizar la migración de las tablas (script dynamodb-migrate)
+   * Levantar serverless-offline (serverless-offline)
+ ```git
+  "scripts": {
+    "dynamodb-service": "java -Djava.library.path=.dynamodb/DynamoDBLocal_lib -jar .dynamodb/DynamoDBLocal.jar -sharedDb -inMemory",
+    "dynamodb-migrate": "sls dynamodb start --migrate",
+    "serverless-offline": "sls offline start",
+    "start": "concurrently --kill-others \"npm run dynamodb-service\" \"npm run dynamodb-migrate\" \"npm run serverless-offline\""
+  },
+```
+* Ejecutamos los scripts configurados
+```git
+npm start
+```
+* Si se ha realizado la migración de tablas previamente (ejecutado el comando anterior), al momento de una nueva ejecución con el mismo, surgiran errores en consola. Esto esta contemplado ya que la migración levanta el servicio de dynamodb, pero `se podrá ejecutar el servicio sin problemas`. Una alternativa es usar directamente el comando `sls offline start` ya que se corrió inicialmente y al menos una vez dicha migración. 
+
+
 
 <br>
 
