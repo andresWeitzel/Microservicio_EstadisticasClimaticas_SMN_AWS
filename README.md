@@ -260,6 +260,14 @@ custom:
     stages:
       - dev
 ```
+* Instalamos prettier para indentaciones
+``` git
+npm i prettier --save
+```
+* Instalamos node-input-validator para para validaciones de atributos en request, objetos de clases, etc.
+``` git
+npm i node-input-validator --save
+```
 * Instalamos el sdk client de dynamodb para las operaciones de db necesarias
 ``` git
 npm install @aws-sdk/client-dynamodb
@@ -270,7 +278,8 @@ npm i @aws-sdk/lib-dynamodb
 ```   
 * Descargamos la Java Runtime Engine (JRE) versión 6.x o posterior. [Descargar desde aquí](https://www.oracle.com/java/technologies/downloads/)
 * Descargamos el .jar que contendrá toda la configuración para la instalación . [Descargar desde aquí](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html#DynamoDBLocal.DownloadingAndRunning.title)
-* Una vez descargado el .jar en formato .tar descomprimimos y copiamos todo su contenido dentro de la carpeta que se cread de dynamo en el proyecto (.dynamodb). Si esta carpeta no está, la creamos dentro de proyecto.
+* Según el .jar que descarguemos tenemos que setear la región correspondiente para su [zona de disponibilidad](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) en las credenciales de conexión de dynamo (si descargamos US West (Oregon) Region será 'us-west-2').
+* Una vez descargado el .jar en formato .tar descomprimimos y copiamos todo su contenido dentro de la carpeta que se ha creado de dynamo en el proyecto (.dynamodb). Si esta carpeta no está, la creamos dentro de proyecto.
 * Procedemos a instalar el servicio de dynamodb
 ```git
 sls dynamodb install
@@ -311,6 +320,10 @@ Default outpu..... : json
 * Visualizamos que se hayan seteado las credenciales
 ```git
 aws configure list
+```
+* Instalamos la dependencia para la ejecución de scripts en paralelo
+``` git
+npm i --save-dev concurrently
 ```
 * Los siguientes scripts configurados en el package.json del proyecto son los encargados de
    * Ejecutar el servicio de dynamoDB en memoria (script dynamodb-service)
@@ -416,6 +429,51 @@ npm start
 <details>
   <summary>Ver</summary>
  <br>
+
+ #### Dynamodb installation
+ * [DynamoDB en local ejecutable](https://cloudkatha.com/how-to-install-dynamodb-locally-on-windows-10/#:~:text=How%20to%20Install%20DynamoDB%20Locally%20on%20Windows%2010,Use%20DynamoDB%20Locally%20to%20Create%20a%20Table%20)
+
+
+#### DynamoDB teoría
+* [Guía DynamoDB](https://www.dynamodbguide.com/local-secondary-indexes/)
+* [Doc Oficial Api DynamoDB](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-dynamo-db.html#http-api-dynamo-db-create-table)
+* [Definicion de atributos](https://tipsfolder.com/range-key-dynamodb-ac5558671b26d5d7f2a34cd9b138c01e/#:~:text=The%20range%20attribute%20is%20the%20type%20key%20of,%28which%20means%20it%20can%20only%20hold%20one%20value%29.)
+* [Clave de Partición vs Ordenación](https://stackoverflow.com/questions/27329461/what-is-hash-and-range-primary-key)
+* [Expresiones de Filtros en Dynamodb](https://www.alexdebrie.com/posts/dynamodb-filter-expressions/)
+* [Ejemplos de Expresiones de Filtros en Dynamodb](https://dynobase.dev/dynamodb-filterexpression/)
+
+#### Dynamodb operations sdk v-3
+* [Operations](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_dynamodb_code_examples.html)
+* [Operations API-REST](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-dynamo-db.html)
+
+#### Videotutoriales 
+* [Dynamodb local config](https://www.youtube.com/watch?v=-KRykmVIoV0&t=663s)
+* [Crud Dynamodb](https://www.youtube.com/watch?v=hOcbHz4T0Eg)
+
+#### Dynamodb examples
+* [Plugin serverless](https://www.serverless.com/plugins/serverless-dynamodb-local)
+* [Creación de varias tablas](https://stackoverflow.com/questions/47327765/creating-two-dynamodb-tables-in-serverless-yml)
+* [Ejemplo dynamodb serverless](https://github.com/serverless/examples/tree/v3/aws-node-rest-api-with-dynamodb-and-offline)
+* [Dynamodb SDK examples](https://github.com/aws-samples/aws-dynamodb-examples/tree/master/DynamoDB-SDK-Examples/node.js)
+* [CRUD Dynamodb](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-dynamo-db.html)
+
+#### Dynamodb code
+* [Api Rest Base](https://github.com/jacksonyuan-yt/dynamodb-crud-api-gateway)
+
+
+#### Herramientas 
+ * [Herramienta de Diseño AWS app.diagrams.net](https://app.diagrams.net/?splash=0&libs=aws4)
+
+#### Api Gateway
+ * [Buenas Prácticas Api-Gateway](https://docs.aws.amazon.com/whitepapers/latest/best-practices-api-gateway-private-apis-integration/rest-api.html)
+ * [Creación de Api-keys personalizadas](https://towardsaws.com/protect-your-apis-by-creating-api-keys-using-serverless-framework-fe662ad37447)
+
+ #### Librerías
+ * [Validación de campos](https://www.npmjs.com/package/node-input-validator)
+
+ #### Package.json
+ * [Configuración de scripts en paralelo](https://stackoverflow.com/questions/30950032/how-can-i-run-multiple-npm-scripts-in-parallel)
+
 
 <br>
 

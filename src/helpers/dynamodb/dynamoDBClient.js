@@ -16,14 +16,14 @@ let dynamo;
  */
 const dynamoDBClient = async () => {
     try {
-         client = new DynamoDBClient({
+         client = await new DynamoDBClient({
             region: process.env.REGION,
             accessKeyId: process.env.ACCESS_KEY_RANDOM_VALUE,
             secretAccessKey: process.env.SECRET_KEY_RANDOM_VALUE,
             endpoint: process.env.ENDPOINT
         });
 
-        dynamo = DynamoDBDocumentClient.from(client);
+        dynamo = await DynamoDBDocumentClient.from(client);
 
         return dynamo;
 
