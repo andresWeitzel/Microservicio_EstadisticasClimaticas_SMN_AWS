@@ -1,59 +1,127 @@
 'use strict';
 
-class BioetanolPrecio {
+export class EstadisticasClimaticas {
     constructor(
+        /**
+         * @description Unique identifier
+         */
         uuid,
-        periodo,
-        bioetCanAzucar,
-        bioetMaiz,
-        createdAt
+        /**
+         * @description Weather Station
+         */
+        estacion,
+        /**
+         * @description Temperature (°C)
+         */
+        temp,
+        /**
+         * @description Maximun temperature (°C)
+         */
+        tempMax,
+        /**
+         * @description Minimum temperature (°C)
+         */
+        tempMin,
+        /**
+         * @description Relative humidity (%)
+         */
+        humRel,
+        /**
+         * @description Wind speed (km/h)
+         */
+        velViento,
+        /**
+         * @description Total cloudiness (octavos)
+         */
+        nubosTotal,
+        /**
+         * @description Precipitation (mm)
+         */
+        precip,
+        /**
+         * @description Freq. of days with Precip above 1.0 mm (mm)
+         */
+        frecDiasPrecipSup
     ) {
         this.uuid = uuid,
-            this.periodo = periodo,
-            this.bioetCanAzucar = bioetCanAzucar,
-            this.bioetMaiz = bioetMaiz,
-            this.createdAt = createdAt
+            this.estacion = estacion,
+            this.temp = temp,
+            this.tempMax = tempMax,
+            this.tempMin = tempMin,
+            this.humRel = humRel,
+            this.velViento = velViento,
+            this.nubosTotal = nubosTotal,
+            this.precip = precip,
+            this.frecDiasPrecipSup = frecDiasPrecipSup
     }
-    getUuid(){
+    getUuid() {
         return this.uuid;
     }
-    setUuid(uuid){
+    setUuid(uuid) {
         return this.uuid;
     }
-    getPeriodo(){
-        return this.periodo;
+    getEstacion() {
+        return this.estacion;
     }
-    setPeriodo(periodo){
-        return this.periodo;
+    setEstacion(estacion) {
+        return this.estacion;
     }
-    getBioetCanAzucar(){
-        return this.bioetCanAzucar;
+    getTemp() {
+        return this.temp;
     }
-    setBioetCanAzucar(bioetCanAzucar){
-        return this.bioetCanAzucar;
+    setTemp(temp) {
+        return this.temp;
     }
-    getBioetMaiz(){
-        return this.bioetMaiz;
+    getTempMax() {
+        return this.tempMax;
     }
-    setBioetMaiz(bioetMaiz){
-        return this.bioetMaiz;
+    setTempMax(tempMax) {
+        return this.tempMax;
     }
-    getCreatedAt(){
-        return this.createdAt;
+    getTempMin() {
+        return this.tempMin;
     }
-    setCreatedAt(createdAt){
-        return this.createdAt;
+    setTempMin(tempMin) {
+        return this.tempMin;
+    }
+    getHumRel() {
+        return this.humRel;
+    }
+    setHumRel(humRel) {
+        return this.humRel;
+    }
+    getVelViento() {
+        return this.velViento;
+    }
+    setVelViento(velViento) {
+        return this.velViento;
+    }
+    getNubosTotal() {
+        return this.nubosTotal;
+    }
+    setNubosTotal(nubosTotal) {
+        return this.nubosTotal;
+    }
+    getPrecip() {
+        return this.precip;
+    }
+    setPrecip(precip) {
+        return this.precip;
+    }
+    getFrecDiasPrecipSup() {
+        return this.frecDiasPrecipSup;
+    }
+    setFrecDiasPrecipSup(frecDiasPrecipSup) {
+        return this.frecDiasPrecipSup;
     }
 
-    toString(){
-        return `[ Uuid : ${this.getUuid()} , Periodo : ${this.getPeriodo()}, Bioetanol Caña de Azucar[$/L] : $${this.getBioetCanAzucar()}, Bioetanol Maíz [$/L] : $${this.getBioetMaiz()}, Created at : ${this.getCreatedAt()} ] `;
+
+    toString() {
+        return `[ Uuid : ${this.getUuid()} , estacion : ${this.getEstacion()}, Temperatura (°C) : ${this.getTemp()}, Temperatura máxima (°C) : ${this.getTempMax()}, Temperatura mínima (°C) : ${this.getTempMin()}, Humedad Relativa (%) : ${this.getHumRel()}, Velocidad del viento (km/h) : ${this.getVelViento()}, Nubosidad total (octavos) : ${this.getNubosTotal()}, Precipitación (mm) : ${this.getPrecip()}, Frec. de días con Precip sup a 1.0 mm (mm) : ${this.getFrecDiasPrecipSup()} ] `;
     }
- 
+
 
 
 
 }
 
-module.exports = {
-    BioetanolPrecio
-}
