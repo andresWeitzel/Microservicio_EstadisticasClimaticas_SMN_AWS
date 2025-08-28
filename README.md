@@ -1,4 +1,20 @@
-![Index app](./doc/assets/data.png)
+<div align = "center">
+  <img src="./doc/assets/img/data.png" > 
+</div>
+
+   <div align="right">
+    <img width="25" height="25" src="./doc/assets/icons/devops/png/aws.png" />
+    <img width="25" height="25" src="./doc/assets/icons/aws/png/lambda.png" />
+    <img width="27" height="27" src="./doc/assets/icons/devops/png/postman.png" />
+    <img width="29" height="27" src="./doc/assets/icons/devops/png/git.png" />
+    <img width="25" height="25" src="./doc/assets/icons/aws/png/s3.png" />
+    <img width="28" height="27" src="./doc/assets/icons/aws/png/api-gateway.png" />
+    <img width="27" height="25" src="./doc/assets/icons/aws/png/parameter-store.png" />
+    <img width="27" height="27" src="./doc/assets/icons/backend/javascript-typescript/png/nodejs.png" />
+    <img width="27" height="28" src="./doc/assets/icons/aws/png/dynamo.png" />
+  </div>
+
+<br>
 
 # Microservicio_EstadisticasClimaticas_SMN_AWS
 Api Rest para la gestión de magnitudes climáticas del SMN como lo son temperatura, humedad, nubosidad, precipitación, etc de diversas estaciones meteorológicas implementado con JWT, NodeJS, DynamoDB, Systems Manager Parameter Store, Bucket S3, Api-Gateway, Serverless-Framework, Lambda, etc. Los servicios de aws se prueban en local. El código del proyecto y la documentación de este (menos doc técnica), ha sido desarrollado/a en inglés.
